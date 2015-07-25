@@ -1,4 +1,4 @@
-
+s.boot
 (
 SynthDef.new(\pulseTest, {
 	arg ampHz=4, fund=40, maxPartial = 4, width=0.5,verb=0.25;
@@ -21,35 +21,41 @@ SynthDef.new(\pulseTest, {
 x = Synth.new(\pulseTest);
 x.set(\maxPartial,1);
 
-
-
-
-
 ~port = SerialPort.devices[2];
-
 (
-	~connectArduino = Routine{
-		~arduino = SCPyduino.new(~port);
-		4.wait;
-		"The Firmata firmware version on this Arduino board is: ".post;
-		~arduino.firmataVersion.postln}.play;
-	)
+~connectArduino = Routine{
+	// • 1: Connect to the arduino:
+	~arduino = SCPyduino.new(~port);
+	4.wait;
+	"The Firmata firmware version on this Arduino board is: ".post;
+	~arduino.firmataVersion.postln}.play;
+)
 
-~arduino.analog[2].active_(1);
-
-
-
-
+~arduino.analog[0].active_(1);
+~arduino.analog[1].active_(1);
+//~arduino.digitalPorts[3].active_(1);
+//~arduino.digitalPorts[4].active_(1);
+//~arduino.digital[3].mode_(~arduino.digital_input);
+//~arduino.digital[4].mode_(~arduino.digital_input);
 (
 a = fork {
 	loop {
 		~arduino.iterate;
-		~arduino.analog[2].value.postln;
-		x.set(\fund,~arduino.analog[2].value/2);
+		~arduino.analog[0].value.postln;
+	//	~arduino.analog[1].value.postln;
+		x.set(\fund,(~arduino.analog[0].value)/2);
+		x.set(\ampHz,(~arduino.analog[1].value)/15);
+		//x.set(\maxPartial,~arduino.analog[1].value/15);
+
 	}
 };
 )
 a.stop
 
 ~arduino.analog[0].active(0);
+~arduino.analog[1].active(0);
+~arduino.analog[2].active(0);
+~arduino.digital[3].active(0);
+~arduino.digital[4].active(0);
 
+~arduino.close
