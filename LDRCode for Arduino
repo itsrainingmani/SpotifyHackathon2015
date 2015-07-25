@@ -1,0 +1,24 @@
+int LDR = 0; //analog pin to which LDR is connected - it's A0 
+int LDRVALUE = 0; //variable that stores LDR values
+int light_sensitivity = 500; //approx value of light surrounding LDR
+
+void setup()
+{
+  Serial.begin(9600); //start the serial monitor with 9600 buad (bits)
+  pinMode(13,OUTPUT); //looks at pin 13 
+}
+
+void loop(){
+  LDRValue = analogRead(LDR); //read ldr value 
+  Serial.println(LDRVALUE); //prints LDR value to serial monitor 
+  delay(50); //speed by which LDR sends value to arduino
+  if(LDRValue<light_sensitivity){
+    digitalWrite(13,HIGH);
+  }
+  else
+  {
+    digitalWrite(13,LOW);
+  }
+  
+  
+}
