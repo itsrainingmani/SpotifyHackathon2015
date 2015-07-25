@@ -1,0 +1,6 @@
+{
+        var x = SinOsc.ar(MouseX.kr(100, 200));
+        SinOsc.ar(300 * x + 800, 0, 0.5 )
+        +
+        PinkNoise.ar(0.1 * x + 0.1)
+}.play;
