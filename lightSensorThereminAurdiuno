@@ -33,6 +33,7 @@ x.set(\maxPartial,1);
 
 ~arduino.analog[0].active_(1);
 ~arduino.analog[1].active_(1);
+~arduino.analog[5].active_(1);
 //~arduino.digitalPorts[3].active_(1);
 //~arduino.digitalPorts[4].active_(1);
 //~arduino.digital[3].mode_(~arduino.digital_input);
@@ -42,11 +43,11 @@ a = fork {
 	loop {
 		~arduino.iterate;
 		~arduino.analog[0].value.postln;
+		~arduino.analog[5].value.postln;
 	//	~arduino.analog[1].value.postln;
 		x.set(\fund,(~arduino.analog[0].value)/2);
 		x.set(\ampHz,(~arduino.analog[1].value)/15);
-		//x.set(\maxPartial,~arduino.analog[1].value/15);
-
+		x.set(\maxPartial,~arduino.analog[5].value/16);
 	}
 };
 )
@@ -54,8 +55,8 @@ a.stop
 
 ~arduino.analog[0].active(0);
 ~arduino.analog[1].active(0);
-~arduino.analog[2].active(0);
-~arduino.digital[3].active(0);
-~arduino.digital[4].active(0);
+~arduino.analog[5].active(0);
+//~arduino.digital[3].active(0);
+//~arduino.digital[4].active(0);
 
 ~arduino.close
